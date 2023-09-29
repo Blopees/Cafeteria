@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 28/09/2023 às 20:16
--- Versão do servidor: 10.4.28-MariaDB
--- Versão do PHP: 8.2.4
+-- Tempo de geração: 29-Set-2023 às 02:59
+-- Versão do servidor: 10.4.24-MariaDB
+-- versão do PHP: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,199 +24,125 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `autenticacao`
---
-
-CREATE TABLE `autenticacao` (
-  `id_Autenticacao` int(100) NOT NULL,
-  `idCliente` int(100) DEFAULT NULL,
-  `id_Operador` int(100) DEFAULT NULL,
-  `id_niveis_admin` int(100) DEFAULT NULL,
-  `Login` varchar(255) DEFAULT NULL,
-  `Senha` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `cliente`
---
-
-CREATE TABLE `cliente` (
-  `idCliente` int(100) NOT NULL,
-  `Nome` varchar(255) DEFAULT NULL,
-  `Email` varchar(255) DEFAULT NULL,
-  `Telefone` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `itens`
+-- Estrutura da tabela `itens`
 --
 
 CREATE TABLE `itens` (
-  `id_Itens` int(100) NOT NULL,
-  `id_Produto` int(100) DEFAULT NULL,
-  `Quantidade` int(200) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `ID_Item` int(100) NOT NULL,
+  `Quantidade` int(100) DEFAULT NULL,
+  `Preço` decimal(7,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `niveis_admin`
+-- Estrutura da tabela `niveis_admin`
 --
 
 CREATE TABLE `niveis_admin` (
-  `id_niveis_admin` int(100) NOT NULL,
-  `Nivel` int(2) DEFAULT NULL,
-  `Descrição` varchar(200) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `ID_Niveis_Admin` int(3) NOT NULL,
+  `Nível` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `operador`
---
-
-CREATE TABLE `operador` (
-  `id_Operador` int(100) NOT NULL,
-  `Nome` varchar(40) DEFAULT NULL,
-  `Email` varchar(250) DEFAULT NULL,
-  `Telefone` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `pagamento`
+-- Estrutura da tabela `pagamento`
 --
 
 CREATE TABLE `pagamento` (
-  `id_Pagamento` int(100) NOT NULL,
-  `id_Pedido` int(100) NOT NULL,
-  `Hora_Data` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `ID_Pagamento` int(100) NOT NULL,
+  `ID_Pedido` int(100) DEFAULT NULL,
+  `Data_Hora` datetime DEFAULT NULL,
+  `Forma_Pagamento` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `pedido`
+-- Estrutura da tabela `pedido`
 --
 
 CREATE TABLE `pedido` (
-  `id_Pedido` int(100) NOT NULL,
-  `idCliente` int(100) DEFAULT NULL,
-  `id_Operador` int(100) DEFAULT NULL,
-  `id_Itens` int(100) DEFAULT NULL,
-  `Forma_Pagamento` varchar(100) DEFAULT NULL,
-  `Pedido_Fechado` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `ID_Pedido` int(100) NOT NULL,
+  `ID_Usuario` int(100) DEFAULT NULL,
+  `ID_Item` int(100) DEFAULT NULL,
+  `Pedido_Fechado` varchar(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `produto`
+-- Estrutura da tabela `usuario`
 --
 
-CREATE TABLE `produto` (
-  `id_Produto` int(100) NOT NULL,
-  `Categoria` varchar(250) DEFAULT NULL,
-  `Preço` varchar(250) DEFAULT NULL,
-  `Descrição` varchar(250) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `usuario` (
+  `ID_Usuario` int(100) NOT NULL,
+  `ID_Nivel_Admin` int(3) DEFAULT NULL,
+  `Login` varchar(50) DEFAULT NULL,
+  `Senha` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Índices para tabelas despejadas
 --
 
 --
--- Índices de tabela `autenticacao`
---
-ALTER TABLE `autenticacao`
-  ADD PRIMARY KEY (`id_Autenticacao`),
-  ADD KEY `idCliente` (`idCliente`),
-  ADD KEY `id_Operador` (`id_Operador`),
-  ADD KEY `id_niveis_admin` (`id_niveis_admin`);
-
---
--- Índices de tabela `cliente`
---
-ALTER TABLE `cliente`
-  ADD PRIMARY KEY (`idCliente`);
-
---
--- Índices de tabela `itens`
+-- Índices para tabela `itens`
 --
 ALTER TABLE `itens`
-  ADD PRIMARY KEY (`id_Itens`),
-  ADD KEY `id_Produto` (`id_Produto`);
+  ADD PRIMARY KEY (`ID_Item`);
 
 --
--- Índices de tabela `niveis_admin`
+-- Índices para tabela `niveis_admin`
 --
 ALTER TABLE `niveis_admin`
-  ADD PRIMARY KEY (`id_niveis_admin`);
+  ADD PRIMARY KEY (`ID_Niveis_Admin`);
 
 --
--- Índices de tabela `operador`
---
-ALTER TABLE `operador`
-  ADD PRIMARY KEY (`id_Operador`);
-
---
--- Índices de tabela `pagamento`
+-- Índices para tabela `pagamento`
 --
 ALTER TABLE `pagamento`
-  ADD PRIMARY KEY (`id_Pagamento`),
-  ADD KEY `id_Pedido` (`id_Pedido`);
+  ADD PRIMARY KEY (`ID_Pagamento`),
+  ADD KEY `ID_Pedido` (`ID_Pedido`);
 
 --
--- Índices de tabela `pedido`
+-- Índices para tabela `pedido`
 --
 ALTER TABLE `pedido`
-  ADD PRIMARY KEY (`id_Pedido`),
-  ADD KEY `idCliente` (`idCliente`),
-  ADD KEY `id_Operador` (`id_Operador`),
-  ADD KEY `id_Itens` (`id_Itens`);
+  ADD PRIMARY KEY (`ID_Pedido`),
+  ADD KEY `ID_Usuario` (`ID_Usuario`),
+  ADD KEY `ID_Item` (`ID_Item`);
 
 --
--- Índices de tabela `produto`
+-- Índices para tabela `usuario`
 --
-ALTER TABLE `produto`
-  ADD PRIMARY KEY (`id_Produto`);
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`ID_Usuario`),
+  ADD KEY `ID_Nivel_Admin` (`ID_Nivel_Admin`);
 
 --
--- Restrições para tabelas despejadas
+-- Restrições para despejos de tabelas
 --
 
 --
--- Restrições para tabelas `autenticacao`
---
-ALTER TABLE `autenticacao`
-  ADD CONSTRAINT `autenticacao_ibfk_1` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`),
-  ADD CONSTRAINT `autenticacao_ibfk_2` FOREIGN KEY (`id_Operador`) REFERENCES `operador` (`id_Operador`),
-  ADD CONSTRAINT `autenticacao_ibfk_3` FOREIGN KEY (`id_niveis_admin`) REFERENCES `niveis_admin` (`id_niveis_admin`);
-
---
--- Restrições para tabelas `itens`
---
-ALTER TABLE `itens`
-  ADD CONSTRAINT `itens_ibfk_1` FOREIGN KEY (`id_Produto`) REFERENCES `produto` (`id_Produto`);
-
---
--- Restrições para tabelas `pagamento`
+-- Limitadores para a tabela `pagamento`
 --
 ALTER TABLE `pagamento`
-  ADD CONSTRAINT `pagamento_ibfk_1` FOREIGN KEY (`id_Pedido`) REFERENCES `pedido` (`id_Pedido`);
+  ADD CONSTRAINT `pagamento_ibfk_1` FOREIGN KEY (`ID_Pedido`) REFERENCES `pedido` (`ID_Pedido`);
 
 --
--- Restrições para tabelas `pedido`
+-- Limitadores para a tabela `pedido`
 --
 ALTER TABLE `pedido`
-  ADD CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`),
-  ADD CONSTRAINT `pedido_ibfk_2` FOREIGN KEY (`id_Operador`) REFERENCES `operador` (`id_Operador`),
-  ADD CONSTRAINT `pedido_ibfk_3` FOREIGN KEY (`id_Itens`) REFERENCES `itens` (`id_Itens`);
+  ADD CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`ID_Usuario`) REFERENCES `usuario` (`ID_Usuario`),
+  ADD CONSTRAINT `pedido_ibfk_2` FOREIGN KEY (`ID_Item`) REFERENCES `itens` (`ID_Item`);
+
+--
+-- Limitadores para a tabela `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`ID_Nivel_Admin`) REFERENCES `niveis_admin` (`ID_Niveis_Admin`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
